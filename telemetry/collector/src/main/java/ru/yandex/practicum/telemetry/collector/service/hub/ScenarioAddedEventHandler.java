@@ -3,6 +3,7 @@ package ru.yandex.practicum.telemetry.collector.service.hub;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
+import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
 import ru.yandex.practicum.telemetry.collector.model.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.HubEventType;
 import ru.yandex.practicum.telemetry.collector.model.ScenarioAddedEvent;
@@ -10,8 +11,8 @@ import ru.yandex.practicum.telemetry.collector.model.ScenarioAddedEvent;
 @Component(value = "SCENARIO_ADDED_HUB_EVENT")
 public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAddedEvent> {
 
-    public ScenarioAddedEventHandler(KafkaClient client) {
-        super(client);
+    public ScenarioAddedEventHandler(KafkaClient client, KafkaTopics topics) {
+        super(client, topics);
     }
 
     @Override

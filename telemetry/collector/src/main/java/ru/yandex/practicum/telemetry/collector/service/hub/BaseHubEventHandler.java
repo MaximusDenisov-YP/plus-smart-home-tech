@@ -16,9 +16,11 @@ import ru.yandex.practicum.telemetry.collector.service.HubEventHandler;
 @Setter
 public abstract class BaseHubEventHandler<T extends HubEvent> implements HubEventHandler {
     private final KafkaClient client;
+    private final KafkaTopics topics;
 
-    public BaseHubEventHandler(KafkaClient client) {
+    public BaseHubEventHandler(KafkaClient client, KafkaTopics topics) {
         this.client = client;
+        this.topics = topics;
     }
 
     public abstract HubEventType getMessageType();
@@ -29,7 +31,7 @@ public abstract class BaseHubEventHandler<T extends HubEvent> implements HubEven
     public void handle(HubEvent event) {
         HubEventAvro hubEventAvro = mapToAvro(event);
         Producer<String, SpecificRecordBase> producer = client.getProducer();
-        producer.send(new ProducerRecord<>(KafkaTopics.HUB_TOPIC, hubEventAvro));
+        producer.send(new ProducerRecord<>(topics.hub(), hubEventAvro));
     }
 
 }

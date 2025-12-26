@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
+import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
 import ru.yandex.practicum.telemetry.collector.model.SensorEvent;
 import ru.yandex.practicum.telemetry.collector.model.SensorEventType;
 import ru.yandex.practicum.telemetry.collector.model.SwitchSensorEvent;
@@ -11,8 +12,8 @@ import ru.yandex.practicum.telemetry.collector.model.SwitchSensorEvent;
 @Component(value = "SWITCH_SENSOR_EVENT")
 public class SwitchSensorEventHandler extends BaseSensorEventHandler<SwitchSensorEvent> {
 
-    public SwitchSensorEventHandler(KafkaClient client) {
-        super(client);
+    public SwitchSensorEventHandler(KafkaClient client, KafkaTopics topics) {
+        super(client, topics);
     }
 
     @Override

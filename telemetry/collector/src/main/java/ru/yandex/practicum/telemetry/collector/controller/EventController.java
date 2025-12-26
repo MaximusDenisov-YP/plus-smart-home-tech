@@ -19,7 +19,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Validated
 @RestController
 @RequestMapping(value = "/events", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EventController {

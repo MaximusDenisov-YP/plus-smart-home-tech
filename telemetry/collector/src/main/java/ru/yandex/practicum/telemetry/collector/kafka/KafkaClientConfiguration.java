@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -19,13 +20,30 @@ public class KafkaClientConfiguration {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
+    @Value("${kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${kafka.consumer.key-deserializer}")
+    private String consumerKeyDeserializer;
+
+    @Value("${kafka.consumer.value-deserializer}")
+    private String consumerValueDeserializer;
+
+    @Value("${kafka.consumer.group-id-prefix}")
+    private String groupIdPrefix;
+
+    @Value("${kafka.producer.key-serializer}")
+    private String producerKeySerializer;
+
+    @Value("${kafka.producer.value-serializer}")
+    private String producerValueSerializer;
+
     @Bean
     @Scope("prototype")
-    KafkaClient getClient() {
+    public KafkaClient getClient() {
         return new KafkaClient() {
 
             private Consumer<String, SpecificRecordBase> consumer;
-
             private Producer<String, SpecificRecordBase> producer;
 
             @Override
@@ -38,10 +56,14 @@ public class KafkaClientConfiguration {
 
             private void initConsumer() {
                 Properties config = new Properties();
-                config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-                config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-                config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "ru.yandex.practicum.kafka.serializer.GeneralAvroDeserializer");
-                config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumer-client-" + counter.getAndIncrement());
+                config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+                config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, consumerKeyDeserializer);
+                config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, consumerValueDeserializer);
+                config.put(
+                        ConsumerConfig.GROUP_ID_CONFIG,
+                        groupIdPrefix + counter.getAndIncrement()
+                );
+
                 consumer = new KafkaConsumer<>(config);
             }
 
@@ -55,9 +77,9 @@ public class KafkaClientConfiguration {
 
             private void initProducer() {
                 Properties config = new Properties();
-                config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-                config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "ru.yandex.practicum.kafka.serializer.GlobalAvroSerializer");
+                config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+                config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, producerKeySerializer);
+                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, producerValueSerializer);
 
                 producer = new KafkaProducer<>(config);
             }

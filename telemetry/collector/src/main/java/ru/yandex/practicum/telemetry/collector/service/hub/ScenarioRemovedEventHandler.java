@@ -4,13 +4,14 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
+import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
 import ru.yandex.practicum.telemetry.collector.model.*;
 
 @Component(value = "SCENARIO_REMOVED_HUB_EVENT")
 public class ScenarioRemovedEventHandler extends BaseHubEventHandler<ScenarioRemovedEvent> {
 
-    public ScenarioRemovedEventHandler(KafkaClient client) {
-        super(client);
+    public ScenarioRemovedEventHandler(KafkaClient client, KafkaTopics topics) {
+        super(client, topics);
     }
 
     @Override

@@ -16,9 +16,11 @@ import ru.yandex.practicum.telemetry.collector.service.SensorEventHandler;
 @Setter
 public abstract class BaseSensorEventHandler<T extends SensorEvent> implements SensorEventHandler {
     private final KafkaClient client;
+    private final KafkaTopics topics;
 
-    public BaseSensorEventHandler(KafkaClient client) {
+    public BaseSensorEventHandler(KafkaClient client, KafkaTopics topics) {
         this.client = client;
+        this.topics = topics;
     }
 
     public abstract SensorEventType getMessageType();
@@ -29,7 +31,7 @@ public abstract class BaseSensorEventHandler<T extends SensorEvent> implements S
     public void handle(SensorEvent event) {
         SensorEventAvro sensorEventAvro = mapToAvro(event);
         Producer<String, SpecificRecordBase> producer = client.getProducer();
-        producer.send(new ProducerRecord<>(KafkaTopics.SENSOR_TOPIC, sensorEventAvro));
+        producer.send(new ProducerRecord<>(topics.sensor(), sensorEventAvro));
     }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
+import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
 import ru.yandex.practicum.telemetry.collector.model.DeviceRemovedEvent;
 import ru.yandex.practicum.telemetry.collector.model.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.HubEventType;
@@ -11,8 +12,8 @@ import ru.yandex.practicum.telemetry.collector.model.HubEventType;
 @Component(value = "DEVICE_REMOVED_HUB_EVENT")
 public class DeviceRemovedEventHandler extends BaseHubEventHandler<DeviceRemovedEvent> {
 
-    public DeviceRemovedEventHandler(KafkaClient producer) {
-        super(producer);
+    public DeviceRemovedEventHandler(KafkaClient client, KafkaTopics topics) {
+        super(client, topics);
     }
 
     @Override

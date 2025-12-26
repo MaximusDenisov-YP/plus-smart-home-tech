@@ -5,6 +5,7 @@ import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceTypeAvro;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
+import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
 import ru.yandex.practicum.telemetry.collector.model.DeviceAddedEvent;
 import ru.yandex.practicum.telemetry.collector.model.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.HubEventType;
@@ -12,8 +13,8 @@ import ru.yandex.practicum.telemetry.collector.model.HubEventType;
 @Component(value = "DEVICE_ADDED_HUB_EVENT")
 public class DeviceAddedEventHandler extends BaseHubEventHandler<DeviceAddedEvent> {
 
-    public DeviceAddedEventHandler(KafkaClient client) {
-        super(client);
+    public DeviceAddedEventHandler(KafkaClient client, KafkaTopics topics) {
+        super(client, topics);
     }
 
     @Override
