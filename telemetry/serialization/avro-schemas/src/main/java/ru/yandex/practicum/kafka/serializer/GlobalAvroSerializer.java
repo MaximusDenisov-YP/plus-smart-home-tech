@@ -12,14 +12,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class GlobalAvroSerializer implements Serializer<SpecificRecordBase> {
+
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private BinaryEncoder encoder;
 
-    public byte[] serialize(String topic, SpecificRecordBase data) {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+    @Override
+    public byte[] serialize(final String topic, final SpecificRecordBase data) {
+        try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             if (data != null) {
-                DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
+                final DatumWriter<SpecificRecordBase> writer = new SpecificDatumWriter<>(data.getSchema());
+
                 encoder = encoderFactory.binaryEncoder(out, encoder);
+
                 writer.write(data, encoder);
                 encoder.flush();
             }
