@@ -7,7 +7,7 @@ import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
-import ru.yandex.practicum.telemetry.collector.model.*;
+import ru.yandex.practicum.telemetry.collector.model.ScenarioRemovedEvent;
 
 import java.time.Instant;
 

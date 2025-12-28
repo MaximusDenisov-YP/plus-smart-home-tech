@@ -6,8 +6,6 @@ import ru.yandex.practicum.grpc.telemetry.event.ScenarioAddedEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
-import ru.yandex.practicum.telemetry.collector.model.HubEvent;
-import ru.yandex.practicum.telemetry.collector.model.HubEventType;
 import ru.yandex.practicum.telemetry.collector.model.ScenarioAddedEvent;
 
 import java.time.Instant;
@@ -40,10 +38,8 @@ public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAdded
                                                     .setOperation(ConditionOperationAvro.valueOf(condition.getOperation().name()));
 
                                     switch (condition.getValueCase()) {
-                                        case BOOL_VALUE ->
-                                                builder.setValue(condition.getBoolValue() ? 1 : 0);
-                                        case INT_VALUE ->
-                                                builder.setValue(condition.getIntValue());
+                                        case BOOL_VALUE -> builder.setValue(condition.getBoolValue() ? 1 : 0);
+                                        case INT_VALUE -> builder.setValue(condition.getIntValue());
                                         case VALUE_NOT_SET ->
                                                 throw new IllegalArgumentException("Condition value not set");
                                     }
