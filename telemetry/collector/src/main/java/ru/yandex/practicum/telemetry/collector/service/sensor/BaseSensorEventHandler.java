@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaClient;
 import ru.yandex.practicum.telemetry.collector.kafka.KafkaTopics;
@@ -23,12 +24,12 @@ public abstract class BaseSensorEventHandler<T extends SensorEvent> implements S
         this.topics = topics;
     }
 
-    public abstract SensorEventType getMessageType();
+    public abstract SensorEventProto.PayloadCase getMessageType();
 
-    public abstract SensorEventAvro mapToAvro(SensorEvent event);
+    public abstract SensorEventAvro mapToAvro(SensorEventProto event);
 
     @Override
-    public void handle(SensorEvent event) {
+    public void handle(SensorEventProto event) {
         SensorEventAvro sensorEventAvro = mapToAvro(event);
         Producer<String, SpecificRecordBase> producer = client.getProducer();
         producer.send(new ProducerRecord<>(topics.sensor(), sensorEventAvro));
